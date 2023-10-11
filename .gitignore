@@ -1,0 +1,52 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+
+# Ignore database files
+db.sqlite3
+
+# Ignore log files
+*.log
+
+# Ignore configuration files with sensitive information (e.g., settings_local.py)
+*.ini
+*.env
+
+# Ignore static and media files (these should be served separately)
+/static/
+/media/
+
+# Ignore virtual environment
+venv/
+.env
+
+# Ignore compiled JavaScript files
+*.js.map
+
+# Ignore IDE-specific files and directories
+.idea/
+.vscode/
+
+# Ignore Python package build directories
+/dist/
+/build/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore compiled Python files
+*.pyo
+*.pyd
+
+# Ignore backup files
+*~
+*.bak
+*.swp
+
+# Ignore user-specific settings
+*.idea/workspace.xml
+*.idea/tasks.xml
+*.idea/dictionaries
+
+# Ignore local development settings
+*.local
