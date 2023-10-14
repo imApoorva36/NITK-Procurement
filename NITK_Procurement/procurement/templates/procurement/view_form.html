@@ -1,0 +1,150 @@
+{% extends './layout.html' %}
+  {% load static %}
+  {% block body %}
+  <div class="form-full">
+    <div class="form-header">
+      <h1 style="max-width: max-content; margin: auto;">{{form.title}}</h1>
+      <h5 style="max-width: max-content; margin: auto;">{{form.description}}</h5>
+    </div>
+    <form action="{% url 'fill_form' id=form.id %}" method="post">
+        {% csrf_token %}
+    <div class="form-body">
+      {% for sec in sections %}
+        {% if sec.section_type == "center" %}
+        <div class="sec-center">
+          {% if sec.title %}
+            <h1>{{sec.title}}</h1>
+          {% endif %}
+          {% if sec.description %}
+           <h5>{{sec.description}}</h5>
+          {% endif %}
+          {% for ques in sec.questions.all %}
+            <div style="width: max-content; margin: auto;">
+              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% if sec.section_type == "left" %}
+        <div class="sec-left">
+          {% if sec.title %}
+            <h1>{{sec.title}}</h1>
+          {% endif %}
+          {% if sec.description %}
+           <h5>{{sec.description}}</h5>
+          {% endif %}
+          {% for ques in sec.questions.all %}
+            <div>
+              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% if sec.section_type == "flex" %}
+        <div class="sec-flex">
+          {% if sec.title %}
+            <h1>{{sec.title}}</h1>
+          {% endif %}
+          {% if sec.description %}
+           <h5>{{sec.description}}</h5>
+          {% endif %}
+          {% for ques in sec.questions.all %}
+            <div>
+              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% if sec.section_type == "table" %}
+        <div class="sec-table">
+          <table border="50">
+            <tr>
+              <th>{% if sec.title %}{{sec.title}}
+              {% endif %}</th>
+              <th>{{sec.description}}</th>
+            </tr>
+            {% for ques in sec.questions.all %}
+            <tr>
+              <td>{{ques.question}}</td>
+              <td><input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
+            </tr>
+          {% endfor %}
+          </table>
+        </div>
+        {% endif %}
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </div>
+    </form>
+  </div>
+<style>
+  h1 {
+    font-size: 25px;
+  }
+  h2{
+    font-size: 15px;
+  }
+  .form-full{
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px;
+    background: white;
+  }
+  .form-header{
+    max-width: 1000px;
+    margin: auto;
+    border-bottom: solid;
+    border-width: 2px;
+  }
+
+  .sec-center{
+    max-width: 500px;
+    margin: auto;
+  }
+
+  .sec-flex{
+    display: grid;
+    grid-template-columns: 900px 900px;
+    grid-column: 0px 900px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: 1rem;
+  }
+  .sec-table{
+    max-width: 500px;
+    margin: auto;
+  }
+  table{
+    display: table;
+    border: 1rem;
+    width: 500px;
+  }
+  .form-body{
+    padding-bottom: 30px;
+    border-bottom: solid;
+  }
+
+</style>
+<script>
+    function handleInputChange(quesId) {
+    // Get the input element by its name
+    var inputElement = document.querySelector(`input[name="question${quesId}"]`);
+
+    // Update the value attribute with the user's input
+    if (inputElement) {
+      var userInput = inputElement.value;
+      inputElement.setAttribute('value', userInput);
+    }
+  }
+
+  // Attach an event listener to input fields for change events
+  var questions = document.querySelectorAll('input[type="text"]');
+  questions.forEach(function (input) {
+    input.addEventListener('change', function (event) {
+      var quesId = event.target.name.replace('question', '');
+      handleInputChange(quesId);
+    });
+  });
+</script>
+  {% endblock %}

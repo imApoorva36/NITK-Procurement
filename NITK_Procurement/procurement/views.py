@@ -74,27 +74,55 @@ def logout_view(request) :
         logout(request)
         return HttpResponseRedirect(reverse(login_view))
 
+from django.template.defaulttags import register
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+
 def view_form(request, id) :
     if request.user.is_authenticated :
         get_form = Form.objects.get(id = id)
         get_sections = Section.objects.filter(form = get_form)
-        # if request.method == "GET" :
-        #     if request.user in get_form.responses : Need to do this later if required..
+
         if request.method == "GET" :
-            return render(request, "procurement/form.html", {
-                "form" : get_form,
-                "sections" : get_sections
-            })
+            user_responses = Response.objects.filter(form = get_form, user = request.user)
+            if user_responses.exists() :
+                all_responses = {}
+                for response in user_responses :
+                    all_responses[response.question.id] = response.body
+                return render(request, "procurement/view_form.html", {
+                    "form" : get_form,
+                    "sections" : get_sections,
+                    "responses" : all_responses
+                })
+            else :
+                return render(request, "procurement/form.html", {
+                    "form" : get_form,
+                    "sections" : get_sections
+                })
         else :
             all_questions = Question.objects.filter(form = get_form)
-            for question in all_questions :
-                if question.answer_required :
-                    response_for_question = request.POST.get("question" + str(question.id))
-                    new_response = Response(
-                        form = get_form,
-                        body = response_for_question,
-                        user = request.user,
-                        question = question
-                     )
-                    new_response.save()
-            return HttpResponseRedirect(reverse(home))
+            user_responses = Response.objects.filter(form = get_form, user = request.user)
+            if user_responses.exists() :
+                for question in all_questions :
+                    if question.answer_required :
+                        existing_response = Response.objects.get(form = get_form, user = request.user, question = question)
+                        edited_response_body = request.POST.get("question" + str(question.id))
+                        existing_response.body = edited_response_body
+                        existing_response.save()
+                return HttpResponseRedirect(reverse(view_form, args=(id, )))
+
+            else :
+                for question in all_questions :
+                    if question.answer_required :
+                        response_for_question = request.POST.get("question" + str(question.id))
+                        new_response = Response(
+                            form = get_form,
+                            body = response_for_question,
+                            user = request.user,
+                            question = question
+                        )
+                        new_response.save()
+                return HttpResponseRedirect(reverse(home))
+
+
