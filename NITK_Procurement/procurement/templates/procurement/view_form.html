@@ -19,8 +19,8 @@
            <h5>{{sec.description}}</h5>
           {% endif %}
           {% for ques in sec.questions.all %}
-            <div style="width: max-content; margin: auto;">
-              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+            <div style="width: max-content; margin: auto;" class="question">
+              <h2>{{ques.question}}: </h2><input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}">
             </div>
           {% endfor %}
         </div>
@@ -34,8 +34,8 @@
            <h5>{{sec.description}}</h5>
           {% endif %}
           {% for ques in sec.questions.all %}
-            <div>
-              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+            <div class="question">
+              <h2>{{ques.question}}:</h2> <input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}">
             </div>
           {% endfor %}
         </div>
@@ -49,8 +49,8 @@
            <h5>{{sec.description}}</h5>
           {% endif %}
           {% for ques in sec.questions.all %}
-            <div>
-              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+            <div class="question">
+              <h2>{{ques.question}}:</h2> <input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}">
             </div>
           {% endfor %}
         </div>
@@ -66,7 +66,7 @@
             {% for ques in sec.questions.all %}
             <tr>
               <td>{{ques.question}}</td>
-              <td><input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
+              <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
             </tr>
           {% endfor %}
           </table>
@@ -86,9 +86,9 @@
     font-size: 15px;
   }
   .form-full{
-    max-width: 1100px;
+    max-width: 1200px;
     margin: auto;
-    padding: 30px;
+    padding: 40px;
     background: white;
   }
   .form-header{
@@ -104,12 +104,9 @@
   }
 
   .sec-flex{
-    display: grid;
-    grid-template-columns: 900px 900px;
-    grid-column: 0px 900px;
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   .sec-table{
     max-width: 500px;
@@ -124,7 +121,14 @@
     padding-bottom: 30px;
     border-bottom: solid;
   }
-
+  .question{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+  }
+  input{
+    max-width: 200px;
+  }
 </style>
 <script>
     function handleInputChange(quesId) {
