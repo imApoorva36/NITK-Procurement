@@ -83,6 +83,11 @@ def view_form(request, id) :
     if request.user.is_authenticated :
         get_form = Form.objects.get(id = id)
         get_sections = Section.objects.filter(form = get_form)
+        questions = Question.objects.filter(form = get_form)
+        self_question_response = {}
+        for question in questions :
+            if question.self_question :
+                self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
 
         if request.method == "GET" :
             user_responses = Response.objects.filter(form = get_form, user = request.user)
@@ -93,12 +98,14 @@ def view_form(request, id) :
                 return render(request, "procurement/view_form.html", {
                     "form" : get_form,
                     "sections" : get_sections,
-                    "responses" : all_responses
+                    "responses" : all_responses,
+                    "self_question" : self_question_response
                 })
             else :
                 return render(request, "procurement/form.html", {
                     "form" : get_form,
-                    "sections" : get_sections
+                    "sections" : get_sections,
+                    "self_question" : self_question_response
                 })
         else :
             all_questions = Question.objects.filter(form = get_form)

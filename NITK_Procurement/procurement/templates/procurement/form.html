@@ -20,7 +20,11 @@
           {% endif %}
           {% for ques in sec.questions.all %}
             <div style="width: max-content; margin: auto;">
+              {% if ques.self_question %}
+                <h2>{{ques.question}}: {{self_question|get_item:ques.id}}</h2>
+              {% else %}
               <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}"></h2>
+              {% endif %}
             </div>
           {% endfor %}
         </div>
@@ -35,7 +39,11 @@
           {% endif %}
           {% for ques in sec.questions.all %}
             <div>
+              {% if ques.self_question %}
+                <h2>{{ques.question}}: {{self_question|get_item:ques.id}}</h2>
+              {% else %}
               <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}"></h2>
+              {% endif %}
             </div>
           {% endfor %}
         </div>
@@ -50,7 +58,11 @@
           {% endif %}
           {% for ques in sec.questions.all %}
             <div>
+              {% if ques.self_question %}
+                <h2>{{ques.question}}: {{self_question|get_item:ques.id}}</h2>
+              {% else %}
               <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}"></h2>
+              {% endif %}
             </div>
           {% endfor %}
         </div>
@@ -64,9 +76,13 @@
               <th>{{sec.description}}</th>
             </tr>
             {% for ques in sec.questions.all %}
+            <td>{{ques.question}}</td>
             <tr>
-              <td>{{ques.question}}</td>
-              <td><input type="text" name="question{{ques.id}}"></td>
+              {% if ques.self_question %}
+                <td>{{self_question|get_item:ques.id}}</td>
+              {% else %}
+                <td><input type="text" name="question{{ques.id}}"></td>
+              {% endif %}
             </tr>
           {% endfor %}
           </table>
