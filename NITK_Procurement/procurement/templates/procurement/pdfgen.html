@@ -8,6 +8,57 @@
     </div>
     <form id="myForm" action="#" enctype="multipart/form-data" method="post">
         {% csrf_token %}
+
+<h1>JUST FOR TESTING RESPONSES BEING RECEIVED</h1>
+        {% if self_question_response %}
+        <h2>Self Question Responses:</h2>
+        <ul>
+            {% for key, value in self_question_response.items %}
+                <li>Question ID: {{ key }}, Response: {{ value }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No self question responses available.</p>
+        {% endif %}
+    
+    <!-- Accessing all_responses variable -->
+        {% if all_responses %}
+        <h2>All Responses:</h2>
+        <ul>
+            {% for key, value in all_responses.items %}
+                <li>Question ID: {{ key }}, Response: {{ value }}</li>
+            {% endfor %}
+        </ul><hr><hr>
+        <p>{{all_responses}}</p>
+        <hr>
+        <p>{{self_question_response}}</p>
+        {% else %}
+            <p>No responses available.</p>
+        {% endif %}
+<h1>Below is real doc</h1>
+<hr>
+<div class="form-body">
+    {% for sec in sections %}
+      {% if sec.questions.all|length > 0 %} {# Check if the section has questions with responses #}
+      <div class="sec-center">
+        {% if sec.title %}
+        <h1>{{sec.title}}</h1>
+        {% endif %}
+        {% if sec.description %}
+        <h5>{{sec.description}}</h5>
+        {% endif %}
+        {% for ques in sec.questions.all %}
+          {% if responses|get_item:ques.id %} {# Check if the question has a response #}
+          <div style="width: max-content; margin: auto;" class="question">
+            <h2>{{ques.question}}:</h2><input type="text" class="form-control" name="question{{ques.id}}"
+              value="{{responses|get_item:ques.id}}">
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
     <div class="form-body">
       {% for sec in sections %}
         {% if sec.section_type == "center" %}
@@ -35,7 +86,6 @@
           {% endif %}
           {% for ques in sec.questions.all %}
             <div class="question">
-              {% if responses|getitem %}
               <h2>{{ques.question}}:</h2> <input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}">
             </div>
           {% endfor %}
@@ -74,22 +124,9 @@
         </div>
         {% endif %}
       {% endfor %}
-      <button type="submit" name="submit_button"class="btn btn-primary" id="submit_button">Submit</button>
-      <button type="submit" name="save_button" class="btn btn-primary" id="save_button">Save</button>
     </div>
     </form>
   </div>
-<script>
-  document.getElementById("submit_button").addEventListener("click", function () {
-      // Set the form's action attribute to the URL for the "Submit" action
-      document.getElementById("myForm").action = "{% url 'generate_pdf' id=form.id %}";
-  });
-
-  document.getElementById("save_button").addEventListener("click", function () {
-      // Set the form's action attribute to the URL for the "Save" action
-      document.getElementById("myForm").action = "{% url 'fill_form' id=form.id %}";
-  });
-</script>
 <style>
   h1 {
     font-size: 25px;
@@ -163,4 +200,4 @@
     });
   });
 </script>
-  {% endblock %}
+{% endblock %}

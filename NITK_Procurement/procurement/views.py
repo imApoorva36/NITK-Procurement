@@ -5,6 +5,10 @@ from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from .models import Form, Section, Question, Response
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.http import HttpResponse
+from .models import Form, Section, Question, Response
 import datetime
 
 
@@ -91,7 +95,7 @@ def view_form(request, id) :
 
         if request.method == "GET" :
             user_responses = Response.objects.filter(form = get_form, user = request.user)
-            if user_responses.exists() :
+            if user_responses.exists() :    
                 all_responses = {}
                 for response in user_responses :
                     all_responses[response.question.id] = response.body
@@ -132,4 +136,28 @@ def view_form(request, id) :
                         new_response.save()
                 return HttpResponseRedirect(reverse(home))
 
-
+def generate_pdf(request, id):
+    if request.user.is_authenticated:
+        get_form = Form.objects.get(id = id)
+        get_sections = Section.objects.filter(form = get_form)
+        questions = Question.objects.filter(form = get_form)
+        self_question_response = {}
+        for question in questions :
+            if question.self_question :
+                self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
+            user_responses = Response.objects.filter(form = get_form, user = request.user)
+            if user_responses.exists() :    
+                all_responses = {}
+                for response in user_responses :
+                    all_responses[response.question.id] = response.body
+        if request.method == 'POST':
+            context = {
+                'self_question_response': self_question_response,
+                'all_responses': all_responses,
+            }
+            template = get_template('procurement/pdfgen.html')  # Use f-string to include id in the template path
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'filename="Document_Generated.pdf"'
+            pisa.CreatePDF(html, dest=response)
+            return response

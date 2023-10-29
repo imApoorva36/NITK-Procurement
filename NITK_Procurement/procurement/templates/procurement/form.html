@@ -6,9 +6,9 @@
       <h1 style="max-width: max-content; margin: auto;">{{form.title}}</h1>
       <h5 style="max-width: max-content; margin: auto;">{{form.description}}</h5>
     </div>
-    <form action="{% url 'fill_form' id=form.id %}" method="post">
+    <form id="myForm" action="#" enctype="multipart/form-data" method="post">
       {% csrf_token %}
-    <div class="form-body">
+      <div class="form-body">
       {% for sec in sections %}
         {% if sec.section_type == "center" %}
         <div class="sec-center">
@@ -89,11 +89,24 @@
         </div>
         {% endif %}
       {% endfor %}
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-
-  </form>
+      </div>
+      <button type="submit" name="submit_button" class="btn btn-primary" id="submit_button">Submit</button>
+      <button type="submit" name="save_button" class="btn btn-primary" id="save_button">Save</button>
+    </form>
   </div>
+
+<script>
+  document.getElementById("submit_button").addEventListener("click", function () {
+      // Set the form's action attribute to the URL for the "Submit" action
+      document.getElementById("myForm").action = "{% url 'generate_pdf' id=form.id %}";
+  });
+
+  document.getElementById("save_button").addEventListener("click", function () {
+      // Set the form's action attribute to the URL for the "Save" action
+      document.getElementById("myForm").action = "{% url 'fill_form' id=form.id %}";
+  });
+</script>
+
 <style>
   h1 {
     font-size: 25px;
