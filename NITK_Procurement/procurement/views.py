@@ -91,8 +91,10 @@ def view_form(request, id) :
         self_question_response = {}
         for question in questions :
             if question.self_question :
-                self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
-
+                # self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
+                responses = Response.objects.filter(user=request.user, question=question.self_question)
+                if responses.exists():
+                    self_question_response[question.id] = responses[0].body
         if request.method == "GET" :
             user_responses = Response.objects.filter(form = get_form, user = request.user)
             if user_responses.exists() :    
@@ -144,7 +146,10 @@ def generate_pdf(request, id):
         self_question_response = {}
         for question in questions :
             if question.self_question :
-                self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
+                # self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
+                responses = Response.objects.filter(user=request.user, question=question.self_question)
+                if responses.exists():
+                    self_question_response[question.id] = responses[0].body
             user_responses = Response.objects.filter(form = get_form, user = request.user)
             if user_responses.exists() :    
                 all_responses = {}
@@ -152,10 +157,14 @@ def generate_pdf(request, id):
                     all_responses[response.question.id] = response.body
         if request.method == 'POST':
             context = {
-                'self_question_response': self_question_response,
-                'all_responses': all_responses,
+                "self_question_response": self_question_response,
+                "all_responses": all_responses,
+                "form" : get_form,
+                "sections" : get_sections,
+                "responses" : all_responses,
+                "self_question" : self_question_response
             }
-            template = get_template('procurement/pdfgen.html')  # Use f-string to include id in the template path
+            template = get_template('procurement/pdfgen.html')
             html = template.render(context)
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = 'filename="Document_Generated.pdf"'

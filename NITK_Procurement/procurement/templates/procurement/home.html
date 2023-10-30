@@ -7,7 +7,7 @@
     <div class="index">
         <h1>NITK Procurement</h1>
         {% for form in forms %}
-        {{form.outside_title}}
+            <p>{{form.outside_title}} : <a href="http://127.0.0.1:8000/fill_form/{{form.id}}">Access Here</a></p>
         {% endfor %}
     </div>
 </div>

@@ -20,7 +20,11 @@
           {% endif %}
           {% for ques in sec.questions.all %}
             <div style="width: max-content; margin: auto;" class="question">
-              <h2>{{ques.question}}: </h2><input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}">
+              {% if ques.self_question %}
+              <h2>{{ques.question}}: {{self_question|get_item:ques.id}}</h2>
+            {% else %}
+              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+            {% endif %}
             </div>
           {% endfor %}
         </div>
@@ -35,8 +39,11 @@
           {% endif %}
           {% for ques in sec.questions.all %}
             <div class="question">
-              {% if responses|getitem %}
-              <h2>{{ques.question}}:</h2> <input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}">
+              {% if ques.self_question %}
+                <h2>{{ques.question}}: {{self_question|get_item:ques.id}}</h2>
+              {% else %}
+              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+              {% endif %}
             </div>
           {% endfor %}
         </div>
@@ -51,7 +58,12 @@
           {% endif %}
           {% for ques in sec.questions.all %}
             <div class="question">
-              <h2>{{ques.question}}:</h2> <input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}">
+              {% if ques.self_question %}
+              <h2>{{ques.question}}: {{self_question|get_item:ques.id}}</h2>
+            {% else %}
+            <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></h2>
+            {% endif %}
+            <!-- <h2>{{ques.question}}:</h2> <input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"> -->
             </div>
           {% endfor %}
         </div>
