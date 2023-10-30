@@ -23,7 +23,7 @@
               {% if ques.self_question %}
                 <h2>{{ques.question}}: {{self_question|get_item:ques.id}}</h2>
               {% else %}
-              <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}"></h2>
+                <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}"></h2>
               {% endif %}
             </div>
           {% endfor %}
