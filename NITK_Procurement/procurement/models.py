@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Form(models.Model) :
-    form_owner = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True, related_name="created_forms")
+    form_owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="created_forms")
     outside_title = models.CharField(max_length=100, null=True, blank=True)
     in_title = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)

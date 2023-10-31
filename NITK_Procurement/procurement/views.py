@@ -91,10 +91,10 @@ def view_form(request, id) :
         self_question_response = {}
         for question in questions :
             if question.self_question :
-                # self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
-                responses = Response.objects.filter(user=request.user, question=question.self_question)
-                if responses.exists():
-                    self_question_response[question.id] = responses[0].body
+                self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
+                # responses = Response.objects.filter(user=request.user, question=question.self_question)
+                # if responses.exists():
+                #     self_question_response[question.id] = responses[0].body
         if request.method == "GET" :
             user_responses = Response.objects.filter(form = get_form, user = request.user)
             if user_responses.exists() :    

@@ -77,10 +77,17 @@
               <th>{{sec.description}}</th>
             </tr>
             {% for ques in sec.questions.all %}
-            <tr>
-              <td>{{ques.question}}</td>
-              <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
-            </tr>
+              {% if ques.self_question %}
+                <tr>
+                  <td>{{ques.question}}</td>
+                  <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{self_question|get_item:ques.id}}"></td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td>{{ques.question}}</td>
+                  <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
+                </tr>
+              {% endif %}
           {% endfor %}
           </table>
         </div>
