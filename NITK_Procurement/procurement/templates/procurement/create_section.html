@@ -1,0 +1,221 @@
+{% extends './layout.html' %}
+{% load static %}
+{% block body %}
+<div class="create_form">
+    <h2>{{ form.outside_title }}</h2>
+    <br>
+    <h2>{{ form.in_title }}</h2>
+    <br>
+    <h5>{{ form.description }}</h5>
+    <div id="all_forms">
+        <form action="{% url 'create_section' id=form.id %}" id="original-form" class="section_creation" method="post" style="display: none;">
+            {% csrf_token %}
+
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title">
+
+            <label for="description">Description</label>
+            <input type="text" name="description" id="description">
+
+            <label for="section_type">Section Type</label>
+            <select name="section_type" id="section_type">
+                <option value="left">Left</option>
+                <option value="flex">Flex</option>
+                <option value="table">Table</option>
+                <option value="center">Center</option>
+            </select>
+
+            <label for="bold">Bold</label>
+            <input type="checkbox" name="bold" id="bold">
+
+            <label for="line_below">Line Below</label>
+            <input type="checkbox" name="line_below" id="line_below">
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="all_questions">
+            <form id="question_form" class="all_question_form" method="post" style="display: none;">
+                {% csrf_token %}
+                <label for="question">Question: </label>
+                <input type="text" name="question" id="question">
+                <label for="align_type">Question alignment: </label>
+                <select name="align_type" id="align_type" >
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="center">Center</option>
+                </select>
+                <label for="self_question">Self Question</label>
+                <select name="self_question" id="self_question" onchange="sendPostRequest(this)">
+                    {% for form in all_forms %}
+                        <option value="{{form.id}}">{{form}}</option>
+                    {% endfor %}
+                </select>
+                <select name="questions" class="questions">
+                    <option value="" selected disabled>Selected</option>
+                </select>
+                <button type="button" onclick="sendPostRequest()">Get Questions</button>
+
+                <label for="bold_ques">Bold</label>
+                <input type="checkbox" name="bold_ques" id="bold">
+                <button type="submit">Create Question</button>
+            </form>
+        </div>
+    </div>
+    <button type="button" id="create-new-form">Add Section</button>
+</div>
+<script>
+    // Function to add a submit event listener to a form
+    function addSubmitEventListener(form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Send a POST request
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this), // Serialize the form data
+                headers: {
+                    'X-CSRFToken': this.querySelector('[name="csrfmiddlewaretoken"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);
+                // Create a button with the ID from the response
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.id = data.section_id; // Set the button's ID to the ID from the response
+                button.textContent = 'Add Question'; // You can set the button's text here
+
+                // Append the button next to the submit button
+                this.querySelector('button[type="submit"]').insertAdjacentElement('afterend', button);
+
+                // Add a click event listener to the new button
+                button.addEventListener('click', function() {
+                    // Clone the question form
+                    const questionForm = document.getElementById('question_form');
+                    const newQuestionForm = questionForm.cloneNode(true);
+
+                    // Set the form action to 'create_question/<id>'
+                    newQuestionForm.action = `/create_question/${this.id}`;
+
+                    // Clear form input values (if needed)
+                    newQuestionForm.reset();
+
+                    // Generate a unique form ID (optional)
+                    const newQuestionFormId = 'question-form-' + Date.now();
+                    newQuestionForm.setAttribute('id', newQuestionFormId);
+                    newQuestionForm.style.display = 'block';
+
+                    // Append the new question form next to the button
+                    this.insertAdjacentElement('afterend', newQuestionForm);
+
+                    newQuestionForm.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        submitQuestionForm(this);
+                    })
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function submitQuestionForm(form) {
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form), // Serialize the form data
+            headers: {
+                'X-CSRFToken': form.querySelector('[name="csrfmiddlewaretoken"]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Question Form Response:', data);
+        })
+        .catch(error => {
+            console.error('Question Form Error:', error);
+        });
+    }
+
+    // Get the "Create New Form" button
+    const createNewFormButton = document.getElementById('create-new-form');
+
+    createNewFormButton.addEventListener('click', function() {
+        // Clone the original form
+        const originalForm = document.getElementById('original-form');
+        const newForm = originalForm.cloneNode(true);
+
+        // Clear form input values (if needed)
+        newForm.reset();
+
+        // Generate a unique form ID (optional)
+        const newFormId = 'form-' + Date.now();
+        newForm.setAttribute('id', newFormId);
+        newForm.style.display = 'block';
+
+        // Append the new form to the page
+        const allFormsContainer = document.getElementById('all_forms');
+        allFormsContainer.appendChild(newForm);
+
+        // Add the submit event listener to the new form
+        addSubmitEventListener(newForm);
+    });
+
+    // Add the submit event listener to the original form
+    addSubmitEventListener(originalForm);
+</script>
+<script>
+// Add an event listener to the self_question select element
+const selfQuestionSelect = document.getElementById("self_question");
+const questionsSelect = document.querySelector('#questions');
+
+selfQuestionSelect.addEventListener("change", sendPostRequest);
+
+function sendPostRequest(e) {
+    const questionForm = document.getElementById('question_form');
+    const parentForm = e.closest('form');
+    const questionsSelects = parentForm.querySelectorAll('.questions'); // Use querySelectorAll to select all elements with the class
+    const selectedValue = e.value;
+    console.log("Selected value: ", selectedValue);
+
+    if (selectedValue) {
+        const url = `/get_questions/${selectedValue}`;
+
+        // Send a POST request using the fetch API
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': questionForm.querySelector('[name="csrfmiddlewaretoken"]').value,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("all questions", data);
+
+            // Loop through each elements with the class name 'questions'
+            questionsSelects.forEach(questionsSelect => {
+                // Clear existing options
+                questionsSelect.innerHTML = '';
+
+                // Add options based on the response data
+                for (const key in data) {
+                    var option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = data[key];
+                    questionsSelect.appendChild(option);
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+
+
+
+    </script>
+{% endblock %}
