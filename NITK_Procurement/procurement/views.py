@@ -196,10 +196,12 @@ from django.http import JsonResponse
 
 def create_section(request, id):
     get_form = Form.objects.get(id=id)
+    get_sections = get_form.sections.all()
     all_forms = Form.objects.filter(is_active = True)
     if request.method == "GET":
         return render(request, "procurement/create_section.html", {
             "form": get_form,
+            "sections": get_sections,
             "all_forms": all_forms
         })
     else:
@@ -251,3 +253,40 @@ def get_questions(request, id) :
         response = {str(question.id): question.question for question in all_questions}
 
         return JsonResponse(response)
+
+def edit_form(request, id):
+    if request.method == "POST" :
+        get_form = Form.objects.get(id = id)
+        get_form.outside_title = request.POST["outside_title"]
+        get_form.in_title = request.POST["in_title"]
+        get_form.description = request.POST["description"]
+        get_form.is_active = request.POST.get("is_active", False) == "on"
+        get_form.line_below = request.POST.get("line_below_for_form", False) == "on"
+        get_form.save()
+
+        return HttpResponseRedirect(reverse(create_section, args=(id, )))
+
+def edit_section(request, id):
+    if request.method == "POST":
+        section = Section.objects.get(id = id)
+        section.title = request.POST["title"]
+        section.description = request.POST["description"]
+        section.section_type = request.POST["section_type"]
+        section.bold = request.POST["bold"] == "on"
+        section.line_below = request.POST.get("line_below", False) == "on"
+        section.save()
+
+        return HttpResponseRedirect(reverse(create_section, args=(section.form.id, )))
+
+def edit_question(request, id) :
+    if request.method == "POST":
+        question = Question.objects.get(id = id)
+        question.question = request.POST["question"]
+        question.align_type = request.POST["align_type"]
+        question.bold = request.POST.get("bold_ques", False) == "on"
+        self_question_id = request.POST["questions"]
+        if self_question_id :
+            question.self_question = Question.objects.get(id = self_question_id)
+        question.save()
+
+        return HttpResponseRedirect(reverse(create_section, args=(question.form.id, )))

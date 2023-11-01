@@ -13,4 +13,7 @@ urlpatterns = [
     path("create_section/<int:id>", views.create_section, name = "create_section"),
     path("create_question/<int:id>", views.create_question, name="create_question"),
     path("get_questions/<int:id>", views.get_questions, name="get_questions"),
+    path("edit_form/<int:id>", views.edit_form, name="edit_form"),
+    path("edit_section/<int:id>", views.edit_section, name="edit_section"),
+    path("edit_question/<int:id>", views.edit_question, name="edit_question"),
 ]
