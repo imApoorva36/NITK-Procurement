@@ -97,7 +97,7 @@ def view_form(request, id) :
                     self_question_response[question.id] = responses[0].body
         if request.method == "GET" :
             user_responses = Response.objects.filter(form = get_form, user = request.user)
-            if user_responses.exists() :    
+            if user_responses.exists() :
                 all_responses = {}
                 for response in user_responses :
                     all_responses[response.question.id] = response.body
@@ -151,7 +151,7 @@ def generate_pdf(request, id):
                 if responses.exists():
                     self_question_response[question.id] = responses[0].body
             user_responses = Response.objects.filter(form = get_form, user = request.user)
-            if user_responses.exists() :    
+            if user_responses.exists() :
                 all_responses = {}
                 for response in user_responses :
                     all_responses[response.question.id] = response.body

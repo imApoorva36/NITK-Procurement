@@ -1,0 +1,46 @@
+{% extends './layout.html' %}
+{% load static %}
+{% block body %}
+<div class="create_form">
+  <form action="{% url 'create_form' %}" method="post" class="create_form">
+    {% csrf_token %}
+
+    <!-- Label and the first checkbox with default "active" -->
+    <div>
+        <label for="is_active">Is Active</label>
+        <input type="checkbox" name="is_active" id="is_active" checked>
+    </div>
+
+    <!-- Labels for other input fields -->
+    <div>
+        <label for="outside_title">Outside Title</label>
+        <input type="text" name="outside_title" id="outside_title">
+    </div>
+
+    <div>
+        <label for="in_title">In Title</label>
+        <input type="text" name="in_title" id="in_title">
+    </div>
+
+    <div>
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description">
+    </div>
+
+    <div>
+        <label for="line_below">Line Below</label>
+        <input type="checkbox" name="line_below" id="line_below">
+    </div>
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+<style>
+    .create_form{
+        display: grid;
+        gap: 2rem;
+    }
+</style>
+{% endblock %}

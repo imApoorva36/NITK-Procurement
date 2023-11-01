@@ -23,27 +23,27 @@
                     {% for ques in sec.questions.all %}
                         {% if ques.self_question %}
                             {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
                             {% endif %}
                             {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
-                            {% endif %}    
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                            {% endif %}
                             {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
-                            {% endif %}  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                            {% endif %}
                         {% else %}
                             {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
                             {% endif %}
                             {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
-                            {% endif %}    
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                            {% endif %}
                             {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
-                            {% endif %}  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
-                </div>    
+                </div>
             </div>
         {% endif %}
         {% if sec.section_type == "left" %}
@@ -58,24 +58,24 @@
                     {% for ques in sec.questions.all %}
                         {% if ques.self_question %}
                             {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
                             {% endif %}
                             {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
-                            {% endif %}    
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                            {% endif %}
                             {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
-                            {% endif %}  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                            {% endif %}
                         {% else %}
                             {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
                             {% endif %}
                             {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
-                            {% endif %}    
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                            {% endif %}
                             {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
-                            {% endif %}      
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -93,24 +93,24 @@
                     {% for ques in sec.questions.all %}
                         {% if ques.self_question %}
                             {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
                             {% endif %}
                             {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
-                            {% endif %}    
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                            {% endif %}
                             {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>  
-                            {% endif %}  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                            {% endif %}
                         {% else %}
                             {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
                             {% endif %}
                             {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
-                            {% endif %}    
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                            {% endif %}
                             {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>  
-                            {% endif %}      
+                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div>
