@@ -80,7 +80,7 @@ def get_questions(request, id) :
         return JsonResponse(response)
 # URLs
 
-# path("create_form/", views.create_form, name="create_form"),
-#     path("create_section/<int:id>", views.create_section, name = "create_section"),
-#     path("create_question/<int:id>", views.create_question, name="create_question"),
-#     path("get_questions/<int:id>", views.get_questions, name="get_questions"),
+    # path("create_form/", views.create_form, name="create_form"),
+    # path("create_section/<int:id>", views.create_section, name = "create_section"),
+    # path("create_question/<int:id>", views.create_question, name="create_question"),
+    # path("get_questions/<int:id>", views.get_questions, name="get_questions"),
