@@ -7,7 +7,7 @@
     <div class="index">
         <h1>NITK Procurement</h1>
         {% for form in forms %}
-            <p>{{form.outside_title}} : <a href="{% url 'fill_form' id=form.id %}">Access Here</a></p>
+            <p>{{form.outside_title}} : <a href="{% url 'fill_form' id=form.id %}">Access Here</a> {% if request.user.is_superuser %}<a href="{% url 'create_section' id=form.id %}">Edit</a> {% endif %}</p>
         {% endfor %}
     </div>
 </div>
