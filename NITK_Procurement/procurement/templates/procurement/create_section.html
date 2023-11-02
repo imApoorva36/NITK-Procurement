@@ -1,45 +1,58 @@
 {% extends './layout.html' %}
 {% load static %}
 {% block body %}
-<div class="create_form">
+<div class="form_full_details">
+    <div class="form-header">
+        <h2>Form Details</h2>
+    </div>
     <!-- Form for editing the details of the Form -->
     <div class="form_details">
         <form action="{% url 'edit_form' id=form.id %}" method="post" class="edit_form">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="outside_title">Outside Title</label>
-                <input type="text" name="outside_title"  class="form-control" value="{{form.outside_title}}">
-            </div>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="outside_title">Outside Title</label>
+                    <input type="text" name="outside_title"  class="form-control" value="{{form.outside_title}}">
+                </div>
 
-            <div class="form-group">
-                <label for="in_title">In Title</label>
-                <input type="text" name="in_title"  class="form-control" value="{{form.in_title}}">
+                <div class="form-group col-md-5">
+                    <label for="in_title">In Title</label>
+                    <input type="text" name="in_title"  class="form-control" value="{{form.in_title}}">
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="description">Description</label>
                 <input type="text" name="description"  class="form-control" value="{{form.description}}">
             </div>
+            <div class="form-row">
+                <div class="form-check col-md-2" style="display: flex;">
+                    <label for="is_active" class="form-check-label">Is Active</label>
+                    <input type="checkbox" name="is_active"  class="form-check-input" {% if form.is_active %}checked="checked"{% endif %}>
+                </div>
 
-            <div class="form-check" style="display: flex;">
-                <label for="is_active" class="form-check-label">Is Active</label>
-                <input type="checkbox" name="is_active"  class="form-check-input" {% if form.is_active %}checked="checked"{% endif %}>
+                <div class="form-check col-md-2" style="display: flex;">
+                    <label for="line_below" class="form-check-label">Line Below</label>
+                    <input type="checkbox" name="line_below_for_form"  class="form-check-input" {% if form.line_below %}checked="checked"{% endif %}>
+                </div>
+
+                <button type="submit" class = "btn btn-primary col-md-3">Submit</button>
             </div>
-
-            <div class="form-check" style="display: flex;">
-                <label for="line_below" class="form-check-label">Line Below</label>
-                <input type="checkbox" name="line_below_for_form"  class="form-check-input" {% if form.line_below %}checked="checked"{% endif %}>
-            </div>
-
-            <button type="submit" class = "btn btn-primary">Submit</button>
         </form>
     </div>
     <!-- End of Form for editing the details of the Form -->
-
+    <button type="button" id="create-new-form" class="btn btn-warning add_sec_but">Add Section</button>
     <div class="all_sections_in_form">
         {% for section in sections %}
             <div class="each_section_in_form">
-                <h2>Section</h2>
+                <div class="sec">
+                    <h2>Section</h2>
+                    <form action="{% url 'delete_section' id=section.id %}" class="delete_section" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete Section</button>
+                    </form>
+                </div>
+
+                <!-- Form for editing Section details -->
                 <form action="{% url 'edit_section' id=section.id %}"  class="edit_section" method="post" >
                     {% csrf_token %}
                     <div class="each_section_form">
@@ -75,16 +88,22 @@
                                 <label for="line_below">Line Below</label>
                                 <input type="checkbox" name="line_below" {% if section.line_below %}checked="checked"{% endif %} class="form-check-input">
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group col-md-3">
                                 <button type="submit" class="btn btn-warning">Update</button>
                             </div>
                         </div>
-                        <button type="button" id="{{section.id}}" class="btn btn-warning" onclick="addQuestionForm(this)">Add Question</button>
+                        <button type="button" id="{{section.id}}" class="btn btn-warning" onclick="addQuestionForm(this)" style="margin-bottom: 1rem;">Add Question</button>
                     </div>
                 </form>
+                <!-- End of form for editing section details -->
 
                 {% for question in section.questions.all %}
                     <div class="each_question">
+                        <form action="{% url 'delete_question' id=question.id %}" class="delete_question" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete Question</button>
+                        </form>
+                        <!-- From for edititng question details -->
                         <form action="{% url 'edit_question' id=question.id %}" class="edit_section" method="post">
                             {% csrf_token %}
                             <div class="form-group">
@@ -132,6 +151,8 @@
                                 </div>
                             </div>
                         </form>
+                        <!-- End of form for editing question details -->
+
                     </div>
                 {% endfor %}
             </div>
@@ -141,58 +162,80 @@
     <div id="all_forms">
         <form action="{% url 'create_section' id=form.id %}" id="original-form" class="section_creation" method="post" style="display: none;">
             {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" class="form-control">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="section_type">Section Type</label>
+                    <select name="section_type" id="section_type" class="form-control">
+                        <option value="left">Left</option>
+                        <option value="flex">Flex</option>
+                        <option value="table">Table</option>
+                        <option value="center">Center</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" name="description" id="description" class="form-control">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="bold">Bold</label>
+                    <input type="checkbox" name="bold" id="bold">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="line_below">Line Below</label>
+                    <input type="checkbox" name="line_below" id="line_below">
+                </div>
 
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title">
-
-            <label for="description">Description</label>
-            <input type="text" name="description" id="description">
-
-            <label for="section_type">Section Type</label>
-            <select name="section_type" id="section_type">
-                <option value="left">Left</option>
-                <option value="flex">Flex</option>
-                <option value="table">Table</option>
-                <option value="center">Center</option>
-            </select>
-
-            <label for="bold">Bold</label>
-            <input type="checkbox" name="bold" id="bold">
-
-            <label for="line_below">Line Below</label>
-            <input type="checkbox" name="line_below" id="line_below">
-
-            <button type="submit">Submit</button>
+                <button type="submit" class="btn btn-info col-md-3">Submit</button>
+            </div>
         </form>
 
         <div class="all_questions">
+
             <form id="question_form" class="all_question_form" method="post" style="display: none;">
                 {% csrf_token %}
-                <label for="question">Question: </label>
-                <input type="text" name="question" id="question">
-                <label for="align_type">Question alignment: </label>
-                <select name="align_type" id="align_type" >
-                    <option value="left">Left</option>
-                    <option value="right">Right</option>
-                    <option value="center">Center</option>
-                </select>
-                <label for="self_question">Self Question</label>
-                <select name="self_question" id="self_question" onchange="sendPostRequest(this)">
-                    {% for form in all_forms %}
-                        <option value="{{form.id}}">{{form}}</option>
-                    {% endfor %}
-                </select>
-                <select name="questions" class="questions">
-                    <option value="" selected disabled>Selected</option>
-                </select>
-
-                <label for="bold_ques">Bold</label>
-                <input type="checkbox" name="bold_ques" id="bold">
-                <button type="submit">Create Question</button>
+                <div class="form-group">
+                    <label for="question">Question: </label>
+                    <input type="text" name="question" id="question" class="form-control">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label for="align_type">Question alignment : </label>
+                        <select name="align_type" id="align_type" class="form-control">
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                            <option value="center">Center</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="self_question">Self Form :</label>
+                        <select name="self_question" id="self_question" onchange="sendPostRequest(this)" class="form-control">
+                            <option value="" selected disabled>Select Form</option>
+                            {% for form in all_forms %}
+                                <option value="{{form.id}}">{{form}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Select Question :</label>
+                        <select name="questions" class="questions form-control">
+                            <option value="" selected disabled>Selected</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="bold_ques">Bold</label>
+                        <input type="checkbox" name="bold_ques" id="bold">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-info">Submit</button>
             </form>
         </div>
     </div>
-    <button type="button" id="create-new-form">Add Section</button>
 </div>
 <script>
     // Function to add a submit event listener to a form
@@ -286,8 +329,9 @@
         newForm.style.display = 'block';
 
         // Append the new form to the page
-        const allFormsContainer = document.getElementById('all_forms');
-        allFormsContainer.appendChild(newForm);
+        this.insertAdjacentElement('afterend', newForm);
+        // const allFormsContainer = document.getElementById('all_forms');
+        // allFormsContainer.appendChild(newForm);
 
         // Add the submit event listener to the new form
         addSubmitEventListener(newForm);
@@ -374,8 +418,11 @@ function sendPostRequest(e) {
 </script>
 
 <style>
+    .form_full_details{
+        background: rgb(241, 223, 254);
+    }
     .form_details{
-        padding: 40px;
+        padding: 10px 2%;
     }
     .all_sections_in_form{
         padding: 10px;
@@ -383,9 +430,9 @@ function sendPostRequest(e) {
         gap: 2rem;
     }
     .each_section_in_form{
-        background: rgb(230, 253, 230);
+        background: rgb(229, 246, 251);
         padding: 10px;
-        border-radius: 2rem;
+        border-radius: 1rem;
     }
     .div_grid{
         display: grid;
@@ -394,14 +441,49 @@ function sendPostRequest(e) {
     .div_flex{
         display: flex;
     }
-    .each_section_form{
+    .all_question_form{
+        background: rgb(254, 243, 234);
+        padding: 10px 2%;
+        margin-left: 3%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 1rem;
     }
     .each_question{
         padding: 10px 2%;
         margin-left: 5%;
         margin-bottom: 2rem;
         background: rgb(254, 243, 234);
-        border-radius: 2rem;
+        border-radius: 1rem;
+    }
+
+    .delete_question > button{
+        left: 10rem;
+        right: 10rem;
+    }
+    .sec{
+        display: flex;
+        justify-content: space-between;
+        margin-right: 2rem;
+    }
+    .section_creation{
+        background: rgb(229, 246, 251);
+        padding: 10px 3%;
+        margin: 1rem;
+        border-radius: 1rem;
+    }
+    .form-header{
+        margin-left: 2%;
+        padding: 10px 2%;
+        border-bottom: solid;
+    }
+    .form-header>h2{
+        font-weight: 1000;
+        letter-spacing: 3px;
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    .add_sec_but{
+        margin-left: 2rem;
     }
 </style>
 {% endblock %}

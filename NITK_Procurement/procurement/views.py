@@ -178,8 +178,8 @@ def create_form(request) :
         outside_title = request.POST["outside_title"]
         in_title = request.POST["in_title"]
         description = request.POST["description"]
-        is_active = request.POST["is_active"] == "on"
-        line_below = request.POST["line_below"] == "on"
+        is_active = request.POST.get("is_active", False) == "on"
+        line_below = request.POST.get("line_below", False) == "on"
 
         new_form = Form(
             form_owner = request.user,
@@ -230,9 +230,7 @@ def create_question(request, id):
         get_sec = Section.objects.get(id = id)
         question = request.POST["question"]
         align_type = request.POST["align_type"]
-        bold = request.POST["bold_ques"] == "on"
-        self_question_id = request.POST["questions"]
-        self_question = Question.objects.get(id = self_question_id)
+        bold = request.POST.get("bold_ques", False) == "on"
         form = get_sec.form
         new_ques = Question (
             question = question,
@@ -240,8 +238,10 @@ def create_question(request, id):
             form = form,
             align_type = align_type,
             bold = bold,
-            self_question = self_question
         )
+        if "questions" in request.POST :
+            self_question_id = request.POST["questions"]
+            new_ques.self_question = Question.objects.get(id = self_question_id)
         new_ques.save()
         response_data = {'message': "Successfull"}
         return JsonResponse(response_data)
@@ -284,9 +284,23 @@ def edit_question(request, id) :
         question.question = request.POST["question"]
         question.align_type = request.POST["align_type"]
         question.bold = request.POST.get("bold_ques", False) == "on"
-        self_question_id = request.POST["questions"]
-        if self_question_id :
+        if "questions" in request.POST :
+            self_question_id = request.POST["questions"]
             question.self_question = Question.objects.get(id = self_question_id)
         question.save()
 
         return HttpResponseRedirect(reverse(create_section, args=(question.form.id, )))
+
+def delete_question(request, id) :
+    if request.method == "POST" :
+        question = Question.objects.get(id = id)
+        form_id = question.form.id
+        question.delete()
+        return HttpResponseRedirect(reverse(create_section, args=(form_id, )))
+
+def delete_section(request, id) :
+    if request.method == "POST" :
+        section = Section.objects.get(id = id)
+        form_id = section.form.id
+        section.delete()
+        return HttpResponseRedirect(reverse(create_section, args=(form_id, )))
