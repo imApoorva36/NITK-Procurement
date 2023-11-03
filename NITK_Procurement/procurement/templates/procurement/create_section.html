@@ -253,41 +253,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Response:', data);
-                // Create a button with the ID from the response
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.id = data.section_id; // Set the button's ID to the ID from the response
-                button.textContent = 'Add Question'; // You can set the button's text here
-
-                // Append the button next to the submit button
-                this.querySelector('button[type="submit"]').insertAdjacentElement('afterend', button);
-
-                // Add a click event listener to the new button
-                button.addEventListener('click', function() {
-                    // Clone the question form
-                    const questionForm = document.getElementById('question_form');
-                    const newQuestionForm = questionForm.cloneNode(true);
-
-                    // Set the form action to 'create_question/<id>'
-                    newQuestionForm.action = `/create_question/${this.id}`;
-
-                    // Clear form input values (if needed)
-                    newQuestionForm.reset();
-
-                    // Generate a unique form ID (optional)
-                    const newQuestionFormId = 'question-form-' + Date.now();
-                    newQuestionForm.setAttribute('id', newQuestionFormId);
-                    newQuestionForm.style.display = 'block';
-
-                    // Append the new question form next to the button
-                    this.insertAdjacentElement('afterend', newQuestionForm);
-
-                    newQuestionForm.addEventListener('submit', function(event) {
-                        event.preventDefault();
-                        submitQuestionForm(this);
-                    })
-                });
+                window.location.reload();
+                window.scrollTo(0, document.body.scrollHeight+10);
             })
             .catch(error => {
                 console.error('Error:', error);
