@@ -103,15 +103,19 @@ def view_form(request, id) :
                 all_responses = {}
                 for response in user_responses :
                     all_responses[response.question.id] = response.body
+                active_forms = Form.objects.filter(is_active = True)
                 return render(request, "procurement/view_form.html", {
                     "form" : get_form,
+                    "forms" : active_forms,
                     "sections" : get_sections,
                     "responses" : all_responses,
                     "self_question" : self_question_response
                 })
             else :
+                active_forms = Form.objects.filter(is_active = True)
                 return render(request, "procurement/form.html", {
                     "form" : get_form,
+                    "forms":active_forms,
                     "sections" : get_sections,
                     "self_question" : self_question_response
                 })
@@ -190,7 +194,7 @@ def create_form(request) :
             in_title = in_title,
             description = description,
             is_active = is_active,
-            line_below = line_below
+            # line_below = line_below
         )
         new_form.save()
         return HttpResponseRedirect(reverse(home))

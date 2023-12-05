@@ -9,6 +9,18 @@
         {% for form in forms %}
             <p>{{form.outside_title}} : <a href="{% url 'fill_form' id=form.id %}">Access Here</a> {% if request.user.is_superuser %}<a href="{% url 'create_section' id=form.id %}">Edit</a> {% endif %}</p>
         {% endfor %}
+        <hr>
+        <h3>Downloadable Forms</h3><hr>
+        <p>Doc 4Q - Notice Inviting Quotation : <a href="{% static 'documents/Doc4Q.doc' %}" download>Download Here</a></p>
+        <p>
+            <p>Doc 4T - For Estimation below 5 lakhs : <a href="{% static 'documents/Doc4TEstimationbelow5.doc' %}" download>Download Here</a></p>
+            <p>Doc 4T - For Estimation above 5 lakhs : <a href="{% static 'documents/Doc4TEstimationabove5.doc' %}" download>Download Here</a></p>
+        </p>
+        <p>Doc 8 : <a href="{% static 'documents/Doc8.doc' %}" download>Download Here</a></p>
+        <p>Doc 13 : <a href="{% static 'documents/Doc13.doc' %}" download>Download Here</a></p>
+        <p>Doc 14 : <a href="{% static 'documents/Doc14.doc' %}" download>Download Here</a></p>
+        <p>Doc 15 for Purchase Order in ForeignCurrecncy : <a href="{% static 'documents/Doc15-FC-Purchase-Order-ForeignCurrecncy.doc' %}" download>Download Here</a></p>
+        <p>Doc 15 for Purchase Order in Rupee : <a href="{% static 'documents/Doc15-INR-Purchase-Order-Rupee.doc' %}" download>Download Here</a></p>
     </div>
 </div>
 
@@ -65,9 +77,10 @@
         max-width: 650px;
         border-color: rgb(193, 193, 193);;
     }
-    a{
-        width: min-content;
-        margin-left: 2%;
+    a {
+        display: inline-block;
+        text-align: right;
+        margin-left: 20px; /* Adjust this value to align the links */
     }
 </style>
 {% endblock %}
