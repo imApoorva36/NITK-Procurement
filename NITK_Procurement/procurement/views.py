@@ -308,8 +308,3 @@ def delete_section(request, id) :
         form_id = section.form.id
         section.delete()
         return HttpResponseRedirect(reverse(create_section, args=(form_id, )))
-
-
-
-def doc78(request):
-    return render(request, 'procurement/doc78.html')
