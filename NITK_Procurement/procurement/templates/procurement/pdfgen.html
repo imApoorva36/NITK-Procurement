@@ -1,244 +1,262 @@
-{% extends './layout.html' %}
-  {% load static %}
-  {% block body %}
-  <div class="form-full">
-    <div class="form-header">
-      <h1 style="max-width: max-content; margin: auto; text-align:right; font-size: 25px;">{{form.in_title}}</h1>
-      <h5 style="max-width: max-content; margin: auto; text-align:center; font-size: 18px;">{{form.description}}</h5>
-        {% if form.line_below %}
-            <hr>
-        {% endif %}
-    </div>
-    <div class="form-body" style="font-size: 18px;">
-      {% for sec in sections %}
-        {% if sec.section_type == "center" %}
-            <div class="sec-center">
-                <!-- {% if sec.title %}
-                    <h1>{{sec.title}}</h1>
-                {% endif %} -->
-                {% if sec.description %}
-                    <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        
+        <title>{% block title %} {% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <style>
+            body {
+              font-family: "Times New Roman", Times, serif;
+            }
+          </style>
+    </head>
+    <body style="background-color: rgb(237, 237, 237);">
+        <div class="form-full">
+            <div class="form-header">
+              <h1 style="max-width: max-content; margin: auto; text-align:right; font-size: 25px;">{{form.in_title}}</h1>
+              <h5 style="max-width: max-content; margin: auto; text-align:center; font-size: 18px;">{{form.description}}</h5>
+                {% if form.line_below %}
+                    <hr>
                 {% endif %}
-                <div class="qns-flex" style="line-height: 0;">
-                    {% for ques in sec.questions.all %}
-                        {% if ques.self_question %}
-                            {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                        {% else %}
-                            {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
             </div>
-        {% endif %}
-        {% if sec.section_type == "left" %}
-            <div class="sec-left">
-                <!-- {% if sec.title %}
-                    <h1>{{sec.title}}</h1>
-                {% endif %} -->
-                {% if sec.description %}
-                    <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
+            <div class="form-body" style="font-size: 18px;">
+              {% for sec in sections %}
+                {% if sec.section_type == "center" %}
+                    <div class="sec-center">
+                        <!-- {% if sec.title %}
+                            <h1>{{sec.title}}</h1>
+                        {% endif %} -->
+                        {% if sec.description %}
+                            <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
+                        {% endif %}
+                        <div class="qns-flex" style="line-height: 0;">
+                            {% for ques in sec.questions.all %}
+                                {% if ques.self_question %}
+                                    {% if ques.align_type == "left" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "right" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "center" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                {% else %}
+                                    {% if ques.align_type == "left" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "right" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "center" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
                 {% endif %}
-                <div class="qns-flex" style="line-height: 0;">
-                    {% for ques in sec.questions.all %}
-                        {% if ques.self_question %}
-                            {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                        {% else %}
-                            {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
+                {% if sec.section_type == "left" %}
+                    <div class="sec-left">
+                        <!-- {% if sec.title %}
+                            <h1>{{sec.title}}</h1>
+                        {% endif %} -->
+                        {% if sec.description %}
+                            <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
                         {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
-        {% if sec.section_type == "flex" %}
-            <div class="sec-flex" style="line-height: 0;">
-                <!-- {% if sec.title %} -->
-                    <!-- <h1>{{sec.title}}</h1> -->
-                <!-- {% endif %} -->
-                {% if sec.description %}
-                    <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
+                        <div class="qns-flex" style="line-height: 0;">
+                            {% for ques in sec.questions.all %}
+                                {% if ques.self_question %}
+                                    {% if ques.align_type == "left" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "right" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "center" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                {% else %}
+                                    {% if ques.align_type == "left" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "right" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "center" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
                 {% endif %}
-                <div class="qns-flex" style="line-height: 0;">
-                    {% for ques in sec.questions.all %}
-                        {% if ques.self_question %}
-                            {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
-                            {% endif %}
-                        {% else %}
-                            {% if ques.align_type == "left" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "right" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
-                            {% if ques.align_type == "center" %}
-                                <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
-                            {% endif %}
+                {% if sec.section_type == "flex" %}
+                    <div class="sec-flex" style="line-height: 0;">
+                        <!-- {% if sec.title %} -->
+                            <!-- <h1>{{sec.title}}</h1> -->
+                        <!-- {% endif %} -->
+                        {% if sec.description %}
+                            <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
                         {% endif %}
-                    {% endfor %}
+                        <div class="qns-flex" style="line-height: 0;">
+                            {% for ques in sec.questions.all %}
+                                {% if ques.self_question %}
+                                    {% if ques.align_type == "left" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "right" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "center" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{self_question|get_item:ques.id}}</p>
+                                    {% endif %}
+                                {% else %}
+                                    {% if ques.align_type == "left" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: left;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "right" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: right;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                    {% if ques.align_type == "center" %}
+                                        <p class="{% if ques.bold %}bold{% endif %}" style="text-align: center;">{{ques.question}}: {{responses|get_item:ques.id}}</p>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if sec.section_type == "table" %}
+                <div class="sec-table">
+                    {% if ques.self_question %}
+                        <table>
+                            <tr>
+                                <!-- <th>{% if sec.title %}{{sec.title}}
+                                {% endif %}</th> -->
+                                <th></th>
+                                <th class="{% if sec.bold %}bold{% endif %}">{{sec.description}}</th>
+                            </tr>
+                            {% for ques in sec.questions.all %}
+                                <tr>
+                                    <td>{{ques.question}}</td>
+                                    <td>{{self_question|get_item:ques.id}}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <table>
+                            <tr>
+                                <th></th>
+                                <th class="{% if sec.bold %}bold{% endif %}">{{sec.description}}</th>
+                            </tr>
+                            {% for ques in sec.questions.all %}
+                                <tr>
+                                    <td>{{ques.question}}</td>
+                                    <td>{{responses|get_item:ques.id}}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
                 </div>
+                {% endif %}
+                {% if sec.line_below %}
+                    <hr>
+                {% endif %}
+              {% endfor %}
             </div>
-        {% endif %}
-        {% if sec.section_type == "table" %}
-        <div class="sec-table">
-            {% if ques.self_question %}
-                <table>
-                    <tr>
-                        <!-- <th>{% if sec.title %}{{sec.title}}
-                        {% endif %}</th> -->
-                        <th></th>
-                        <th class="{% if sec.bold %}bold{% endif %}">{{sec.description}}</th>
-                    </tr>
-                    {% for ques in sec.questions.all %}
-                        <tr>
-                            <td>{{ques.question}}</td>
-                            <td>{{self_question|get_item:ques.id}}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% else %}
-                <table>
-                    <tr>
-                        <th></th>
-                        <th class="{% if sec.bold %}bold{% endif %}">{{sec.description}}</th>
-                    </tr>
-                    {% for ques in sec.questions.all %}
-                        <tr>
-                            <td>{{ques.question}}</td>
-                            <td>{{responses|get_item:ques.id}}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-        </div>
-        {% endif %}
-        {% if sec.line_below %}
-            <hr>
-        {% endif %}
-      {% endfor %}
-    </div>
-  </div>
-<style>
-  body{
-    background: white;
-    }
-  h1 {
-    font-size: 25px;
-  }
-  .bold {
-    font-weight: bold;
-    }
-  h2{
-    font-size: 15px;
-  }
-  .form-full{
-    max-width: 1200px;
-    margin: auto;
-    padding: 4px;
-    background: white;
-  }
-  .form-header{
-    max-width: 1000px;
-    margin: auto;
-  }
-
-  .sec-center{
-    max-width: 500px;
-    justify-content: space-between;
-    text-align: center;
-  }
-
-  .sec-flex{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .sec-flex .qns-flex{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .sec-table{
-    max-width: 5px;
-    margin: auto;
-  }
-    table {
-        border-collapse: collapse;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    td, th {
-        border: 1px solid black;
-      padding: 8px;
-      text-align: center;
-      width: 50%;
-    }
-  .form-body{
-    padding-bottom: 1px;
-    background: white;
-    background-color: white;
-  }
-  .question{
-    display: flex;
-    align-items: center;
-  }
-  input{
-    max-width: 200px;
-  }
-</style>
-<script>
-    function handleInputChange(quesId) {
-    var inputElement = document.querySelector(`input[name="question${quesId}"]`);
-    if (inputElement) {
-      var userInput = inputElement.value;
-      inputElement.setAttribute('value', userInput);
-    }
-  }
-  var questions = document.querySelectorAll('input[type="text"]');
-  questions.forEach(function (input) {
-    input.addEventListener('change', function (event) {
-      var quesId = event.target.name.replace('question', '');
-      handleInputChange(quesId);
-    });
-  });
-</script>
-{% endblock %}
+          </div>
+        <style>
+          body{
+            background: white;
+            }
+          h1 {
+            font-size: 25px;
+          }
+          .bold {
+            font-weight: bold;
+            }
+          h2{
+            font-size: 15px;
+          }
+          .form-full{
+            max-width: 1200px;
+            margin: auto;
+            padding: 4px;
+            background: white;
+          }
+          .form-header{
+            max-width: 1000px;
+            margin: auto;
+          }
+        
+          .sec-center{
+            max-width: 500px;
+            justify-content: space-between;
+            text-align: center;
+          }
+        
+          .sec-flex{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .sec-flex .qns-flex{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .sec-table{
+            max-width: 5px;
+            margin: auto;
+          }
+            table {
+                border-collapse: collapse;
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+            }
+        
+            td, th {
+                border: 1px solid black;
+              padding: 8px;
+              text-align: center;
+              width: 50%;
+            }
+          .form-body{
+            padding-bottom: 1px;
+            background: white;
+            background-color: white;
+          }
+          .question{
+            display: flex;
+            align-items: center;
+          }
+          input{
+            max-width: 200px;
+          }
+        </style>
+        <script>
+            function handleInputChange(quesId) {
+            var inputElement = document.querySelector(`input[name="question${quesId}"]`);
+            if (inputElement) {
+              var userInput = inputElement.value;
+              inputElement.setAttribute('value', userInput);
+            }
+          }
+          var questions = document.querySelectorAll('input[type="text"]');
+          questions.forEach(function (input) {
+            input.addEventListener('change', function (event) {
+              var quesId = event.target.name.replace('question', '');
+              handleInputChange(quesId);
+            });
+          });
+        </script>
+    </body>
+</html>
