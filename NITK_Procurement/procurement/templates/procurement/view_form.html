@@ -1,6 +1,17 @@
 {% extends './layout.html' %}
   {% load static %}
   {% block body %}
+  <div class="content">
+    <div class="sidebar">
+      <h3 class="logout-button"><a href="{% url 'logout' %}">
+        <button>Logout</button>
+      </a></h3>
+      {% for formshow in forms %}
+          <h3 class="next-button">{{formshow.outside_title}}
+            <a href="{% url 'fill_form' id=formshow.id %}">Access Here</a>
+          </h3>
+      {% endfor %}
+    </div>  
   <div class="form-full">
     <div class="form-header">
       <h1 style="max-width: max-content; margin: auto;">{{form.title}}</h1>
@@ -98,6 +109,7 @@
     </div>
     </form>
   </div>
+</div>
 <script>
   document.getElementById("submit_button").addEventListener("click", function () {
       // Set the form's action attribute to the URL for the "Submit" action
@@ -122,6 +134,36 @@
     padding: 40px;
     background: white;
   }
+  
+  .sidebar {
+    flex: 1;
+    padding: 20px;
+    background-color: #e9e9e9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width:200px;
+}
+.logout-button, .next-button {
+  padding: 12px 20px; /* Adjust padding for larger buttons */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px; /* Adjust font size to make it smaller */
+}
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    /* width: 100%; */
+    width: calc(100% - 10px);
+    max-width: 1500px;
+}
   .form-header{
     max-width: 1000px;
     margin: auto;
