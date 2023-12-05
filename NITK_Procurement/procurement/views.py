@@ -9,10 +9,12 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.http import HttpResponse
 from .models import Form, Section, Question, Response
+from django.contrib.auth.decorators import user_passes_test
 import datetime
 
 
-# Create your views here.
+def is_superuser(user):
+    return user.is_superuser
 
 def home(request) :
     if not request.user.is_authenticated :
@@ -151,9 +153,9 @@ def generate_pdf(request, id):
         for question in questions :
             if question.self_question :
                 # self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
-                responses = Response.objects.filter(user=request.user, question=question.self_question)
+                responses = Response.objects.get(user=request.user, question=question.self_question)
                 if responses.exists():
-                    self_question_response[question.id] = responses[0].body
+                    self_question_response[question.id] = responses.body
             user_responses = Response.objects.filter(form = get_form, user = request.user)
             if user_responses.exists() :
                 all_responses = {}
@@ -175,6 +177,7 @@ def generate_pdf(request, id):
             pisa.CreatePDF(html, dest=response)
             return response
 
+@user_passes_test(is_superuser)
 def create_form(request) :
     if request.method == "GET" :
         return render(request, "procurement/create_form.html")
@@ -198,6 +201,7 @@ def create_form(request) :
 
 from django.http import JsonResponse
 
+@user_passes_test(is_superuser)
 def create_section(request, id):
     get_form = Form.objects.get(id=id)
     get_sections = get_form.sections.all()
@@ -212,7 +216,7 @@ def create_section(request, id):
         title = request.POST["title"]
         description = request.POST["description"]
         section_type = request.POST["section_type"]
-        bold = request.POST["bold"] == "on"
+        bold = request.POST.get("bold", False) == "on"
         line_below = request.POST.get("line_below", False) == "on"
 
         new_sec = Section(
@@ -229,6 +233,7 @@ def create_section(request, id):
         response_data = {'section_id': new_sec.id}
         return JsonResponse(response_data)
 
+@user_passes_test(is_superuser)
 def create_question(request, id):
     if request.method == "POST" :
         get_sec = Section.objects.get(id = id)
@@ -250,6 +255,7 @@ def create_question(request, id):
         response_data = {'message': "Successfull"}
         return JsonResponse(response_data)
 
+@user_passes_test(is_superuser)
 def get_questions(request, id) :
     if request.method == "POST" :
         get_form = Form.objects.get(id = id)
@@ -258,6 +264,7 @@ def get_questions(request, id) :
 
         return JsonResponse(response)
 
+@user_passes_test(is_superuser)
 def edit_form(request, id):
     if request.method == "POST" :
         get_form = Form.objects.get(id = id)
@@ -270,6 +277,7 @@ def edit_form(request, id):
 
         return HttpResponseRedirect(reverse(create_section, args=(id, )))
 
+@user_passes_test(is_superuser)
 def edit_section(request, id):
     if request.method == "POST":
         section = Section.objects.get(id = id)
@@ -282,6 +290,7 @@ def edit_section(request, id):
 
         return HttpResponseRedirect(reverse(create_section, args=(section.form.id, )))
 
+@user_passes_test(is_superuser)
 def edit_question(request, id) :
     if request.method == "POST":
         question = Question.objects.get(id = id)
@@ -295,6 +304,7 @@ def edit_question(request, id) :
 
         return HttpResponseRedirect(reverse(create_section, args=(question.form.id, )))
 
+@user_passes_test(is_superuser)
 def delete_question(request, id) :
     if request.method == "POST" :
         question = Question.objects.get(id = id)
@@ -302,9 +312,17 @@ def delete_question(request, id) :
         question.delete()
         return HttpResponseRedirect(reverse(create_section, args=(form_id, )))
 
+@user_passes_test(is_superuser)
 def delete_section(request, id) :
     if request.method == "POST" :
         section = Section.objects.get(id = id)
         form_id = section.form.id
         section.delete()
         return HttpResponseRedirect(reverse(create_section, args=(form_id, )))
+
+@user_passes_test(is_superuser)
+def delete_form(request, id) :
+    if request.method == "POST" and request.user.is_superuser :
+        form = Form.objects.get(id = id)
+        form.delete()
+        return HttpResponseRedirect(reverse(home))
