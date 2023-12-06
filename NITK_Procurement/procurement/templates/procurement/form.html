@@ -1,17 +1,7 @@
 {% extends './layout.html' %}
   {% load static %}
   {% block body %}
-  <div class="content">
-    <div class="sidebar">
-      <h3 class="logout-button"><a href="{% url 'logout' %}">
-        <button>Logout</button>
-      </a></h3>
-      {% for formshow in forms %}
-          <h3 class="next-button">{{formshow.outside_title}}
-            <a href="{% url 'fill_form' id=formshow.id %}">Access Here</a>
-          </h3>
-      {% endfor %}
-    </div>  
+  <div class="content">  
     <div class="form-full">
       <div class="form-header"><br>
         <h1 style="max-width: max-content; margin: auto;">{{form.title}}</h1>
@@ -89,7 +79,7 @@
               {% for ques in sec.questions.all %}
               <td>{{ques.question}}</td>
               <tr>
-                {% if ques.self_question %}
+                {% if ques.self_question|get_item:ques.id is not None %}
                   <td>{{self_question|get_item:ques.id}}</td>
                 {% else %}
                   <td><input type="text" name="question{{ques.id}}"></td>

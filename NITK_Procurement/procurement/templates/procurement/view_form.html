@@ -88,17 +88,14 @@
               <th>{{sec.description}}</th>
             </tr>
             {% for ques in sec.questions.all %}
-              {% if ques.self_question %}
-                <tr>
-                  <td>{{ques.question}}</td>
+            <tr>
+              <td>{{ques.question}}</td>
+              {% if ques.self_question|get_item:ques.id is None %}
                   <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{self_question|get_item:ques.id}}"></td>
-                </tr>
               {% else %}
-                <tr>
-                  <td>{{ques.question}}</td>
                   <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
-                </tr>
               {% endif %}
+            </tr>
           {% endfor %}
           </table>
         </div>
