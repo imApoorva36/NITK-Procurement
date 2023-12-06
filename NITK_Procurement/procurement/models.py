@@ -7,7 +7,7 @@ class Form(models.Model) :
     in_title = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    # line_below=models.BooleanField(default=False)
+    line_below=models.BooleanField(default=False)
 
     def __str__(self) :
         return self.outside_title
