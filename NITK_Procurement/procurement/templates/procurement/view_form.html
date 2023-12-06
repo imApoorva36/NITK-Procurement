@@ -90,7 +90,7 @@
             {% for ques in sec.questions.all %}
             <tr>
               <td>{{ques.question}}</td>
-              {% if self_question %}
+              {% if ques.self_question %}
                   <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{self_question|get_item:ques.id}}"></td>
               {% else %}
                   <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
