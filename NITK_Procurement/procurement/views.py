@@ -122,13 +122,23 @@ def view_form(request, id) :
         else :
             all_questions = Question.objects.filter(form = get_form)
             user_responses = Response.objects.filter(form = get_form, user = request.user)
-            if user_responses.exists() :
+            if user_responses.exists()  :
                 for question in all_questions :
                     if question.answer_required :
-                        existing_response = Response.objects.get(form = get_form, user = request.user, question = question)
-                        edited_response_body = request.POST.get("question" + str(question.id))
-                        existing_response.body = edited_response_body
-                        existing_response.save()
+                        try:
+                            existing_response = Response.objects.get(form = get_form, user = request.user, question = question)
+                            edited_response_body = request.POST.get("question" + str(question.id))
+                            existing_response.body = edited_response_body
+                            existing_response.save()
+                        except:
+                            response_for_question = request.POST.get("question" + str(question.id))
+                            new_response = Response(
+                                form = get_form,
+                                body = response_for_question,
+                                user = request.user,
+                                question = question
+                            )
+                            new_response.save()
                 return HttpResponseRedirect(reverse(view_form, args=(id, )))
 
             else :
@@ -154,8 +164,8 @@ def generate_pdf(request, id):
             if question.self_question :
                 # self_question_response[question.id] = Response.objects.get(user = request.user, question = question.self_question)
                 responses = Response.objects.get(user=request.user, question=question.self_question)
-                if responses.exists():
-                    self_question_response[question.id] = responses.body
+                # if responses.exists():
+                self_question_response[question.id] = responses.body
             user_responses = Response.objects.filter(form = get_form, user = request.user)
             if user_responses.exists() :
                 all_responses = {}
@@ -284,7 +294,7 @@ def edit_section(request, id):
         section.title = request.POST["title"]
         section.description = request.POST["description"]
         section.section_type = request.POST["section_type"]
-        section.bold = request.POST["bold"] == "on"
+        section.bold = request.POST.get("bold", False)=="on"
         section.line_below = request.POST.get("line_below", False) == "on"
         section.save()
 

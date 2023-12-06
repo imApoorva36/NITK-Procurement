@@ -69,8 +69,8 @@
             {% endif %}
             {% for ques in sec.questions.all %}
               <div>
-                {% if ques.self_question %}
-                  <h2>{{ques.question}}: {{self_question|get_item:ques.id}}</h2>
+                {% if ques.self_question|get_item:ques.id is not None %}
+                  <h2>{{ ques.question }}: {{ self_question|get_item:ques.id }}</h2>
                 {% else %}
                 <h2>{{ques.question}}: <input type="text" name="question{{ques.id}}"></h2>
                 {% endif %}
