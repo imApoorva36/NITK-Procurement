@@ -29,7 +29,7 @@
                             <h1>{{sec.title}}</h1>
                         {% endif %} -->
                         {% if sec.description %}
-                            <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
+                            <p class="{% if sec.bold %}bold{% endif %}">{{sec.description}}</p>
                         {% endif %}
                         <div class="qns-flex" style="line-height: 0;">
                             {% for ques in sec.questions.all %}
@@ -64,7 +64,7 @@
                             <h1>{{sec.title}}</h1>
                         {% endif %} -->
                         {% if sec.description %}
-                            <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
+                            <p class="{% if sec.bold %}bold{% endif %}">{{sec.description}}</p>
                         {% endif %}
                         <div class="qns-flex" style="line-height: 0;">
                             {% for ques in sec.questions.all %}
@@ -99,7 +99,7 @@
                             <!-- <h1>{{sec.title}}</h1> -->
                         <!-- {% endif %} -->
                         {% if sec.description %}
-                            <p class="{% if ques.bold %}bold{% endif %}">{{sec.description}}</p>
+                            <p class="{% if sec.bold %}bold{% endif %}">{{sec.description}}</p>
                         {% endif %}
                         <div class="qns-flex" style="line-height: 0;">
                             {% for ques in sec.questions.all %}
