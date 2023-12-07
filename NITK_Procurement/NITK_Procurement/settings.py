@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9=)sa(hp+7++e_77!c0lo!y%@l2g*mn68hn0jxbi_-%db(o(&$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'procurement'
+    'procurement',
 ]
+
+CSRF_TRUSTED_ORIGINS = ["https://nitkprocurement.azurewebsites.net","http://localhost:8000",]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

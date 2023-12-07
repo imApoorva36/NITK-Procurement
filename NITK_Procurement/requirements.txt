@@ -1,0 +1,4 @@
+Django
+psycopg2
+Pillow
+xhtml2pdf
