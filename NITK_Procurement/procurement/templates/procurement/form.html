@@ -80,9 +80,9 @@
               <td>{{ques.question}}</td>
               <tr>
                 {% if ques.self_question %}
-                  <td>{{self_question|get_item:ques.id}}</td>
+                  <td style="width: auto; box-sizing: border-box;">{{self_question|get_item:ques.id}}</td>
                 {% else %}
-                  <td><input type="text" name="question{{ques.id}}"></td>
+                  <td style="width: auto; box-sizing: border-box;"><input type="text" name="question{{ques.id}}"></td>
                 {% endif %}
               </tr>
             {% endfor %}
