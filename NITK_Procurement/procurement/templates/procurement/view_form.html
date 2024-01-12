@@ -80,7 +80,7 @@
         </div>
         {% endif %}
         {% if sec.section_type == "table" %}
-        <div class="sec-table">
+        <div class="sec-table table-responsive">
           <table border="50">
             <tr>
               <th>{% if sec.title %}{{sec.title}}
@@ -93,7 +93,7 @@
               {% if ques.self_question %}
                   <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{self_question|get_item:ques.id}}"></td>
               {% else %}
-                  <td><input type="text" class="form-control" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
+                  <td><input type="text" class="form-control" style="width: auto; box-sizing: border-box;" name="question{{ques.id}}" value = "{{responses|get_item:ques.id}}"></td>
               {% endif %}
             </tr>
           {% endfor %}
@@ -182,11 +182,50 @@
     max-width: 500px;
     margin: auto;
   }
-  table{
+  /* table{
     display: table;
     border: 1rem;
     width: 500px;
-  }
+  } */
+
+
+  /* Add this style to make the table cells expand diagonally based on content */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Style to make input fields flexible in width */
+input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    max-width: none; /* Remove any maximum width restriction */
+}
+
+/* Remove the fixed width for the input field in the question class */
+.question input {
+    max-width: none;
+}
+
+/* Add the following styles for better responsiveness */
+.form-full {
+    box-sizing: border-box;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+
   .form-body{
     padding-bottom: 30px;
     border-bottom: solid;
